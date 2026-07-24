@@ -228,14 +228,9 @@
   }
   footer.foot strong{ color:var(--ink); font-weight:700; }
 
-  /* 現在（リアルタイム強調） */
-  .act.now, .band.now{ background:var(--now-bg); box-shadow:inset 4px 0 0 var(--now-bar); }
-  .act.now .slot time{ color:var(--now-ink); }
+  /* 現在＝その枠の「時刻」だけ赤くする（進行がずれても“演者が出演中”と誤解させないため最小限） */
+  .act.now .slot time{ color:var(--now-ink); font-weight:800; }
   .band.now > time{ color:var(--now-ink); }
-  .now-badge{ align-self:flex-start; display:inline-flex; align-items:center; gap:5px; font-size:.68rem; font-weight:800; letter-spacing:.08em; color:var(--now-badge-ink); background:var(--now-badge-bg); border-radius:999px; padding:2px 10px; margin-bottom:6px; }
-  .now-badge .dot{ width:7px; height:7px; border-radius:50%; background:currentColor; animation:nowpulse 1.3s ease-in-out infinite; }
-  @keyframes nowpulse{ 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.3; transform:scale(.65);} }
-  @media (prefers-reduced-motion:reduce){ .now-badge .dot{ animation:none; } }
 
   /* 曲＝タップで配信サービスのポップアップ */
   .songbtn{ display:inline; font:inherit; color:inherit; background:none; border:0; padding:0; margin:0; cursor:pointer; -webkit-tap-highlight-color:rgba(124,182,62,.25); }
@@ -366,10 +361,6 @@
     for(var i=0;i<rs.length;i++){ if(rs[i].min<=info.min) cur=rs[i]; }
     if(!cur)return;                    /* 開演前 */
     cur.el.classList.add('now');
-    if(cur.el.classList.contains('act')){
-      var d=cur.el.querySelector('.detail');
-      if(d){var b=document.createElement('span');b.className='now-badge';b.innerHTML='<span class="dot"></span>現在';d.insertBefore(b,d.firstChild);}
-    }
     if(firstRun){firstRun=false;try{cur.el.scrollIntoView({block:'center'});}catch(e){}}
   }
   /* ===== 曲タップ → 配信サービスのポップアップ ===== */
