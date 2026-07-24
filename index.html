@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#8bc53f">
+<title>SHEER LIVE 2026 SUMMER 四谷会場 タイムテーブル</title>
+</head>
+<body>
+<style>
+  :root{
+    --bg:#eef1e6;
+    --surface:#ffffff;
+    --stripe:#f6f9ef;
+    --ink:#1b2013;
+    --muted:#727a64;
+    --line:#e6ebda;
+    --band-bg:#8bc53f;
+    --band-ink:#1c3308;
+    --finale-bg:#1f77c0;
+    --finale-ink:#ffffff;
+    --time-ink:#3c5c1d;
+    --badge-bg:#eef5e0;
+    --badge-ink:#5c7f2e;
+    --badge-line:#cfe3a6;
+    --marker:#7cb63e;
+    --song-ink:#2b3020;
+    --by-ink:#8b9179;
+    --sep:#b9c0a6;
+    --shadow:0 1px 3px rgba(30,50,10,.10),0 8px 40px rgba(30,50,10,.08);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0f120a; --surface:#171b0f; --stripe:#1c2113; --ink:#e8eede;
+      --muted:#939a82; --line:#2a3120; --band-bg:#4e7d24; --band-ink:#eef6df;
+      --finale-bg:#1c5f95; --finale-ink:#eaf3fb; --time-ink:#a6cd6f;
+      --badge-bg:#232c16; --badge-ink:#a6cd6f; --badge-line:#3c4a26;
+      --marker:#8fc650; --song-ink:#dbe1d0; --by-ink:#8b9279; --sep:#4a5334;
+      --shadow:0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#eef1e6; --surface:#ffffff; --stripe:#f6f9ef; --ink:#1b2013;
+    --muted:#727a64; --line:#e6ebda; --band-bg:#8bc53f; --band-ink:#1c3308;
+    --finale-bg:#1f77c0; --finale-ink:#ffffff; --time-ink:#3c5c1d;
+    --badge-bg:#eef5e0; --badge-ink:#5c7f2e; --badge-line:#cfe3a6;
+    --marker:#7cb63e; --song-ink:#2b3020; --by-ink:#8b9179; --sep:#b9c0a6;
+    --shadow:0 1px 3px rgba(30,50,10,.10),0 8px 40px rgba(30,50,10,.08);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f120a; --surface:#171b0f; --stripe:#1c2113; --ink:#e8eede;
+    --muted:#939a82; --line:#2a3120; --band-bg:#4e7d24; --band-ink:#eef6df;
+    --finale-bg:#1c5f95; --finale-ink:#eaf3fb; --time-ink:#a6cd6f;
+    --badge-bg:#232c16; --badge-ink:#a6cd6f; --badge-line:#3c4a26;
+    --marker:#8fc650; --song-ink:#dbe1d0; --by-ink:#8b9279; --sep:#4a5334;
+    --shadow:0 1px 3px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;overflow-x:hidden;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+
+  .board{
+    width:100%;
+    max-width:560px;
+    margin:0 auto;
+    background:var(--surface);
+    box-shadow:var(--shadow);
+  }
+  @media (min-width:600px){ .board{ margin:20px auto; border-radius:14px; overflow:hidden; } }
+
+  /* Masthead */
+  .masthead{
+    background:linear-gradient(160deg,#9ad24f,#7cb63a 60%,#6ba52c);
+    color:#12300a;
+    text-align:center;
+    padding:26px 18px 22px;
+  }
+  .masthead .eyebrow{
+    margin:0 0 8px;
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    color:#1e3a0b;
+    opacity:.85;
+  }
+  .masthead h1{
+    margin:0;
+    font-size:clamp(1.55rem,7vw,2.2rem);
+    font-weight:800;
+    letter-spacing:.02em;
+    line-height:1.15;
+    text-wrap:balance;
+  }
+  .masthead h1 .season{
+    display:block;
+    font-size:.62em;
+    font-weight:700;
+    letter-spacing:.16em;
+    margin-top:4px;
+  }
+  .masthead .sub{
+    margin:12px 0 0;
+    font-size:.82rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:#1e3a0b;
+  }
+
+  /* Section band (OPEN / START / Break / 投票 …) */
+  .band{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 16px;
+    background:var(--band-bg);
+    color:var(--band-ink);
+    border-bottom:2px solid var(--surface);
+  }
+  .band time{
+    flex:0 0 auto;
+    font-size:.95rem;
+    font-weight:800;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.02em;
+  }
+  .band .label{
+    flex:1;
+    text-align:center;
+    font-size:1.02rem;
+    font-weight:800;
+    letter-spacing:.12em;
+  }
+  .band.finale{
+    background:var(--finale-bg);
+    color:var(--finale-ink);
+  }
+  .band.finale .label{ letter-spacing:.04em; }
+
+  /* Act row */
+  .act{
+    display:flex;
+    gap:12px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .act:nth-of-type(even){ background:var(--stripe); }
+  .act .slot{
+    flex:0 0 52px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:5px;
+    padding-top:1px;
+  }
+  .act .slot time{
+    font-size:1rem;
+    font-weight:800;
+    color:var(--time-ink);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.01em;
+  }
+  .act .slot .no{
+    font-size:.68rem;
+    font-weight:700;
+    color:var(--badge-ink);
+    background:var(--badge-bg);
+    border:1px solid var(--badge-line);
+    border-radius:999px;
+    padding:1px 8px;
+    letter-spacing:.03em;
+  }
+  .act .detail{ flex:1 1 auto; min-width:0; }
+  .act .who{
+    margin:0 0 5px;
+    font-size:1.05rem;
+    font-weight:800;
+    letter-spacing:.01em;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .act .songs{
+    margin:0;
+    padding:0;
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .act .songs li{
+    position:relative;
+    padding-left:18px;
+    font-size:.92rem;
+    line-height:1.4;
+    color:var(--song-ink);
+  }
+  .act .songs li::before{
+    content:"\266A";
+    position:absolute;
+    left:0;
+    top:0;
+    color:var(--marker);
+    font-size:.9em;
+  }
+  .act .songs .by{ color:var(--by-ink); font-size:.86em; }
+  .act .songs .by::before{ content:"/"; margin:0 .35em; color:var(--sep); }
+
+  footer.foot{
+    padding:16px;
+    text-align:center;
+    color:var(--muted);
+    font-size:.75rem;
+    letter-spacing:.04em;
+    background:var(--surface);
+    border-top:1px solid var(--line);
+  }
+  footer.foot strong{ color:var(--ink); font-weight:700; }
+</style>
+
+<main class="board">
+
+  <header class="masthead">
+    <p class="eyebrow">2026.08.01 SAT ｜ 四谷会場</p>
+    <h1>SHEER LIVE<span class="season">- 2026 SUMMER -</span></h1>
+    <p class="sub">本番 タイムテーブル</p>
+  </header>
+
+  <section class="band"><time>14:00</time><span class="label">OPEN</span></section>
+  <section class="band"><time>14:25</time><span class="label">START</span></section>
+
+  <article class="act"><div class="slot"><time>14:30</time><span class="no">L1</span></div><div class="detail"><h2 class="who">橋本知風</h2><ul class="songs"><li>M@STERPIECE<span class="by">765PRO ALLSTARS</span></li><li>スーパーハートレート<span class="by">橋本知風</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>14:37</time><span class="no">L2</span></div><div class="detail"><h2 class="who">ひーよんHeeyong</h2><ul class="songs"><li>六等星の夜<span class="by">Aimer</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>14:44</time><span class="no">L3</span></div><div class="detail"><h2 class="who">ユウタ</h2><ul class="songs"><li>FLASH BACK<span class="by">なとり</span></li><li>そんなbitterな話<span class="by">Vaundy</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>14:51</time><span class="no">L4</span></div><div class="detail"><h2 class="who">ラスカル</h2><ul class="songs"><li>愛情<span class="by">小柳ゆき</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>14:58</time><span class="no">L5</span></div><div class="detail"><h2 class="who">黒田博史</h2><ul class="songs"><li>Pale Blue<span class="by">米津玄師</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>15:05</time><span class="no">L6</span></div><div class="detail"><h2 class="who">ささね</h2><ul class="songs"><li>ever since (backtracks)<span class="by">SAYAKA</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>15:12</time><span class="no">L7</span></div><div class="detail"><h2 class="who">Sadako</h2><ul class="songs"><li>ドラえもん・えかきうた<span class="by">大山のぶ代</span></li><li>恋の炎<span class="by">THE ALFEE</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>15:19</time><span class="no">L8</span></div><div class="detail"><h2 class="who">HIROMI</h2><ul class="songs"><li>memories<span class="by">大槻マキ</span></li><li>dear sunrise<span class="by">大槻マキ</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>15:26</time><span class="no">L9</span></div><div class="detail"><h2 class="who">Higashida</h2><ul class="songs"><li>Plazma<span class="by">米津玄師</span></li><li>IRIS OUT<span class="by">米津玄師</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>15:33</time><span class="no">L10</span></div><div class="detail"><h2 class="who">LEANUELE</h2><ul class="songs"><li>Summer Blizzard<span class="by">T.M.Revolution</span></li><li>HIGH PRESSURE<span class="by">T.M.Revolution</span></li><li>HOT LIMIT<span class="by">T.M.Revolution</span></li></ul></div></article>
+
+  <section class="band"><time>15:40</time><span class="label">Break</span></section>
+
+  <article class="act"><div class="slot"><time>15:50</time><span class="no">L11</span></div><div class="detail"><h2 class="who">鷹木</h2><ul class="songs"><li>うっせぇわ<span class="by">Ado</span></li><li>シャンティ<span class="by">wotaku</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>15:57</time><span class="no">L12</span></div><div class="detail"><h2 class="who">如月斑</h2><ul class="songs"><li>MAGIC<span class="by">Ado</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:04</time><span class="no">L13</span></div><div class="detail"><h2 class="who">YUI</h2><ul class="songs"><li>青と夏<span class="by">Mrs. GREEN APPLE</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:11</time><span class="no">L14</span></div><div class="detail"><h2 class="who">rina</h2><ul class="songs"><li>ハレンチ<span class="by">ちゃんみな</span></li><li>Speaking<span class="by">Mrs. GREEN APPLE</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:18</time><span class="no">L15</span></div><div class="detail"><h2 class="who">Masako</h2><ul class="songs"><li>群青<span class="by">YOASOBI</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:25</time><span class="no">L16</span></div><div class="detail"><h2 class="who">アリー</h2><ul class="songs"><li>ケセラセラ<span class="by">Mrs. GREEN APPLE</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:32</time><span class="no">L17</span></div><div class="detail"><h2 class="who">Monica</h2><ul class="songs"><li>廊下を走るな<span class="by">日食なつこ</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:39</time><span class="no">L18</span></div><div class="detail"><h2 class="who">C!o</h2><ul class="songs"><li>怪盗Vを見逃すな<span class="by">放課後クライマックスガールズ</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:46</time><span class="no">L19</span></div><div class="detail"><h2 class="who">きよぴーバンド</h2><ul class="songs"><li>Fly me to the moon<span class="by">フランク・シナトラ</span></li><li>Honesty<span class="by">Billy Joel</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>16:53</time><span class="no">L20</span></div><div class="detail"><h2 class="who">Yuzu</h2><ul class="songs"><li>命日<span class="by">ちゃんみな</span></li><li>キラーチューン<span class="by">東京事変</span></li></ul></div></article>
+
+  <section class="band"><time>17:00</time><span class="label">Break</span></section>
+
+  <article class="act"><div class="slot"><time>17:10</time><span class="no">L21</span></div><div class="detail"><h2 class="who">前髪うねりん♪</h2><ul class="songs"><li>もらい泣き<span class="by">一青窈</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>17:17</time><span class="no">L22</span></div><div class="detail"><h2 class="who">ツンデレこーぴー</h2><ul class="songs"><li>ONE<span class="by">PRODUCE 101 JAPAN SEASON2</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>17:24</time><span class="no">L23</span></div><div class="detail"><h2 class="who">HARUKA.I</h2><ul class="songs"><li>Rising Hope<span class="by">LiSA</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>17:31</time><span class="no">L24</span></div><div class="detail"><h2 class="who">凜</h2><ul class="songs"><li>プレイバックPart2<span class="by">山口百恵</span></li><li>初恋サイダー<span class="by">Bouno!</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>17:38</time><span class="no">L25</span></div><div class="detail"><h2 class="who">優太</h2><ul class="songs"><li>秘密<span class="by">SUPER BEAVER</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>17:45</time><span class="no">L26</span></div><div class="detail"><h2 class="who">ガイア</h2><ul class="songs"><li>鉄壁<span class="by">女王蜂</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>17:52</time><span class="no">L27</span></div><div class="detail"><h2 class="who">マーガレットさわこ</h2><ul class="songs"><li>Still Hungry<span class="by">マーガレットさわこ</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>17:59</time><span class="no">L28</span></div><div class="detail"><h2 class="who">RYO</h2><ul class="songs"><li>M<span class="by">PRINCESS PRINCESS</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>18:06</time><span class="no">L29</span></div><div class="detail"><h2 class="who">Connelle</h2><ul class="songs"><li>forgive<span class="by">MIIKO</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>18:13</time><span class="no">L30</span></div><div class="detail"><h2 class="who">けんちゃん</h2><ul class="songs"><li>プライド・ブライト<span class="by">Juice=Juice</span></li></ul></div></article>
+
+  <section class="band"><time>18:20</time><span class="label">Break</span></section>
+
+  <article class="act"><div class="slot"><time>18:30</time><span class="no">L31</span></div><div class="detail"><h2 class="who">ハッピースマイルNo.1</h2><ul class="songs"><li>ケセラセラ<span class="by">Mrs. GREEN APPLE</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>18:37</time><span class="no">L32</span></div><div class="detail"><h2 class="who">べーた</h2><ul class="songs"><li>ボクノート<span class="by">スキマスイッチ</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>18:44</time><span class="no">L33</span></div><div class="detail"><h2 class="who">Mizuki</h2><ul class="songs"><li>かたちあるもの<span class="by">柴咲コウ</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>18:51</time><span class="no">L34</span></div><div class="detail"><h2 class="who">玲°</h2><ul class="songs"><li>IRIS OUT<span class="by">米津玄師</span></li><li>lulu<span class="by">Mrs. GREEN APPLE</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>18:58</time><span class="no">L35</span></div><div class="detail"><h2 class="who">にごじゅう</h2><ul class="songs"><li>The hole<span class="by">King Gnu</span></li></ul></div></article>
+  <article class="act"><div class="slot"><time>19:05</time><span class="no">L36</span></div><div class="detail"><h2 class="who">るりかな</h2><ul class="songs"><li>よあけのうた<span class="by">jo0ji</span></li></ul></div></article>
+
+  <section class="band"><time>19:12</time><span class="label">投票</span></section>
+  <section class="band"><time>19:27</time><span class="label">授賞式</span></section>
+  <section class="band"><time>19:37</time><span class="label">写真／片付け</span></section>
+  <section class="band finale"><time>20:00</time><span class="label">退館完了　お疲れさまでした！</span></section>
+
+  <footer class="foot">
+    <strong>SHEER LIVE -2026 SUMMER- 四谷会場</strong><br>
+    本番タイムテーブル（全36組）｜ 2026年8月1日(土)
+  </footer>
+
+</main>
+</body>
+</html>
