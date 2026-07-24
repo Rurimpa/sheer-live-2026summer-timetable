@@ -90,7 +90,7 @@
     padding:26px 18px 22px;
   }
   .masthead .eyebrow{
-    margin:0 0 8px;
+    margin:11px 0 0;
     font-size:.78rem;
     font-weight:700;
     letter-spacing:.14em;
@@ -238,7 +238,7 @@
   /* 現在＝赤いラインは右側だけ（文字に被らない）。左の定刻は緑のまま（赤くしない）。 */
   .nowline{ position:absolute; right:0; left:auto; width:40%; height:0; border-top:2px solid var(--now-ink); z-index:5; pointer-events:none; }
   .nowline[hidden]{ display:none; }
-  .nowline .lbl{ position:absolute; right:8px; top:-11px; background:var(--surface); color:var(--now-ink); border:1.5px solid var(--now-ink); font-size:.72rem; font-weight:800; padding:0 7px; border-radius:999px; font-variant-numeric:tabular-nums; line-height:1.55; }
+  .nowline .lbl{ position:absolute; left:50%; transform:translateX(-50%); top:-11px; background:var(--surface); color:var(--now-ink); border:1.5px solid var(--now-ink); font-size:.72rem; font-weight:800; padding:0 7px; border-radius:999px; font-variant-numeric:tabular-nums; line-height:1.55; }
 
   /* 曲＝タップで配信サービスのポップアップ */
   .songbtn{ display:inline; font:inherit; color:inherit; background:none; border:0; padding:0; margin:0; cursor:pointer; -webkit-tap-highlight-color:rgba(124,182,62,.25); }
@@ -268,11 +268,11 @@
 <main class="board">
 
   <header class="masthead">
-    <p class="eyebrow">2026.08.01 SAT ｜ 四谷会場</p>
     <h1>SHEER LIVE<span class="season">- 2026 SUMMER -</span></h1>
+    <p class="eyebrow">2026.08.01 SAT ｜ 四谷会場</p>
     <p class="sub">本番 タイムテーブル</p>
     <div class="hlinks">
-      <a class="access" href="https://www.sheerlive.com/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.6 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.6-4-9s1.4-6.6 4-9z"/></g></svg>公式サイト</a>
+      <a class="access" href="https://www.sheerlive.com/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.6 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.6-4-9s1.4-6.6 4-9z"/></g></svg>SHEER LIVE 特設サイト</a>
       <a class="access" href="https://maps.app.goo.gl/dis2mr6JpLiewjsD8" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7.9 2 4.6 5.3 4.6 9.4c0 5.2 6.4 11.6 6.7 11.9.4.4 1 .4 1.4 0 .3-.3 6.7-6.7 6.7-11.9C19.4 5.3 16.1 2 12 2zm0 10.2a2.8 2.8 0 1 1 0-5.6 2.8 2.8 0 0 1 0 5.6z"/></svg>会場アクセス</a>
     </div>
   </header>
