@@ -236,7 +236,7 @@
 
   /* 現在＝その枠の「時刻」だけ赤くする（進行がずれても“演者が出演中”と誤解させないため最小限） */
   /* 現在＝赤いラインは右側だけ（文字に被らない）。左の定刻は緑のまま（赤くしない）。 */
-  .nowline{ position:absolute; right:0; left:auto; width:40%; height:0; border-top:2px solid var(--now-ink); z-index:5; pointer-events:none; }
+  .nowline{ position:absolute; right:0; left:auto; width:112px; height:0; border-top:2px solid var(--now-ink); z-index:5; pointer-events:none; }
   .nowline[hidden]{ display:none; }
   .nowline .lbl{ position:absolute; left:50%; transform:translateX(-50%); top:-11px; background:var(--surface); color:var(--now-ink); border:1.5px solid var(--now-ink); font-size:.72rem; font-weight:800; padding:0 7px; border-radius:999px; font-variant-numeric:tabular-nums; line-height:1.55; }
 
