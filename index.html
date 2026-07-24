@@ -232,9 +232,8 @@
   footer.foot strong{ color:var(--ink); font-weight:700; }
 
   /* 現在＝その枠の「時刻」だけ赤くする（進行がずれても“演者が出演中”と誤解させないため最小限） */
-  .act.now .slot time{ color:var(--now-ink); font-weight:800; }
-  .band.now > time{ color:var(--now-ink); }
-  .nowline{ position:absolute; left:0; right:0; height:0; border-top:2px solid var(--now-ink); z-index:5; pointer-events:none; }
+  /* 現在＝赤いラインは右側だけ（文字に被らない）。左の定刻は緑のまま（赤くしない）。 */
+  .nowline{ position:absolute; right:0; left:auto; width:40%; height:0; border-top:2px solid var(--now-ink); z-index:5; pointer-events:none; }
   .nowline[hidden]{ display:none; }
   .nowline .lbl{ position:absolute; right:8px; top:-11px; background:var(--surface); color:var(--now-ink); border:1.5px solid var(--now-ink); font-size:.72rem; font-weight:800; padding:0 7px; border-radius:999px; font-variant-numeric:tabular-nums; line-height:1.55; }
 
@@ -402,7 +401,7 @@
     linemusic:{nm:'LINE MUSIC',ic:'<svg viewBox="0 0 28 28"><rect x="3" y="3" width="22" height="22" rx="6" fill="#06C755"/><path d="M18 8l-7 1.6v7.2a2.1 2.1 0 1 1-1.4-2V11l8.4-1.9z" fill="#fff"/></svg>',url:function(q){return 'https://music.line.me/webapp/search?query='+q;}},
     ytmusic:{nm:'YouTube Music',ic:'<svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="11" fill="#FF0000"/><polygon points="11.5,9.5 20,14 11.5,18.5" fill="#fff"/></svg>',url:function(q){return 'https://music.youtube.com/search?q='+q;}}
   };
-  var LAYOUT=[['youtube'],['spotify','applemusic'],['linemusic','ytmusic']];
+  var LAYOUT=[['youtube'],['applemusic','spotify'],['linemusic','ytmusic']];
   var pop=null;
   function svcAnchor(key){
     var s=SVC[key];
