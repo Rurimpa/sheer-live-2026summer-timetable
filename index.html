@@ -78,6 +78,7 @@
     margin:0 auto;
     background:var(--surface);
     box-shadow:var(--shadow);
+    position:relative;
   }
   @media (min-width:600px){ .board{ margin:20px auto; border-radius:14px; overflow:hidden; } }
 
@@ -118,6 +119,8 @@
     letter-spacing:.08em;
     color:#1e3a0b;
   }
+  .masthead .access{ display:inline-flex; align-items:center; gap:6px; margin-top:14px; padding:8px 16px; background:#ffffff; color:#1e3a0b; font-size:.85rem; font-weight:800; text-decoration:none; border-radius:999px; box-shadow:0 2px 7px rgba(20,40,5,.18); }
+  .masthead .access:active{ transform:scale(.97); }
 
   /* Section band (OPEN / START / Break / 投票 …) */
   .band{
@@ -231,6 +234,9 @@
   /* 現在＝その枠の「時刻」だけ赤くする（進行がずれても“演者が出演中”と誤解させないため最小限） */
   .act.now .slot time{ color:var(--now-ink); font-weight:800; }
   .band.now > time{ color:var(--now-ink); }
+  .nowline{ position:absolute; left:0; right:0; height:0; border-top:2px solid var(--now-ink); z-index:5; pointer-events:none; }
+  .nowline[hidden]{ display:none; }
+  .nowline .lbl{ position:absolute; right:8px; top:-11px; background:var(--surface); color:var(--now-ink); border:1.5px solid var(--now-ink); font-size:.72rem; font-weight:800; padding:0 7px; border-radius:999px; font-variant-numeric:tabular-nums; line-height:1.55; }
 
   /* 曲＝タップで配信サービスのポップアップ */
   .songbtn{ display:inline; font:inherit; color:inherit; background:none; border:0; padding:0; margin:0; cursor:pointer; -webkit-tap-highlight-color:rgba(124,182,62,.25); }
@@ -263,6 +269,7 @@
     <p class="eyebrow">2026.08.01 SAT ｜ 四谷会場</p>
     <h1>SHEER LIVE<span class="season">- 2026 SUMMER -</span></h1>
     <p class="sub">本番 タイムテーブル</p>
+    <a class="access" href="https://maps.app.goo.gl/dis2mr6JpLiewjsD8" target="_blank" rel="noopener noreferrer">📍 会場アクセス（地図を開く）</a>
   </header>
 
   <section class="band"><time>14:00</time><span class="label">OPEN</span></section>
@@ -353,14 +360,38 @@
     document.querySelectorAll('.now').forEach(function(el){el.classList.remove('now');});
     document.querySelectorAll('.now-badge').forEach(function(el){el.remove();});
   }
+  var nowLine=null;
+  function ensureLine(){
+    if(nowLine)return;
+    var board=document.querySelector('.board'); if(!board)return;
+    nowLine=document.createElement('div'); nowLine.className='nowline'; nowLine.hidden=true;
+    nowLine.innerHTML='<span class="lbl"></span>';
+    board.appendChild(nowLine);
+  }
+  function fmt(min){ var h=Math.floor(min/60),m=min%60; return (h<10?'0':'')+h+':'+(m<10?'0':'')+m; }
+  function hideLine(){ if(nowLine) nowLine.hidden=true; }
+  function positionLine(info,cur,rs,idx){
+    ensureLine(); if(!nowLine)return;
+    var curEl=cur.el;
+    var slotTop=curEl.offsetTop;
+    var nextEl=(idx+1<rs.length)?rs[idx+1].el:null;
+    var nextTop=nextEl?nextEl.offsetTop:(curEl.offsetTop+curEl.offsetHeight);
+    var nextMin=nextEl?rs[idx+1].min:(cur.min+7);
+    var frac=(nextMin>cur.min)?((info.min-cur.min)/(nextMin-cur.min)):0;
+    if(frac<0)frac=0; if(frac>1)frac=1;
+    nowLine.style.top=(slotTop+frac*(nextTop-slotTop))+'px';
+    nowLine.querySelector('.lbl').textContent=fmt(info.min);
+    nowLine.hidden=false;
+  }
   function update(){
     clearNow();
     var info=nowInfo();
-    if(!info.day)return;               /* 開催日以外は強調しない */
-    var rs=rowList(),cur=null;
-    for(var i=0;i<rs.length;i++){ if(rs[i].min<=info.min) cur=rs[i]; }
-    if(!cur)return;                    /* 開演前 */
+    if(!info.day){ hideLine(); return; }   /* 開催日以外は強調しない */
+    var rs=rowList(),cur=null,cidx=-1;
+    for(var i=0;i<rs.length;i++){ if(rs[i].min<=info.min){ cur=rs[i]; cidx=i; } }
+    if(!cur){ hideLine(); return; }        /* 開演前 */
     cur.el.classList.add('now');
+    positionLine(info,cur,rs,cidx);
     if(firstRun){firstRun=false;try{cur.el.scrollIntoView({block:'center'});}catch(e){}}
   }
   /* ===== 曲タップ → 配信サービスのポップアップ ===== */
@@ -424,6 +455,7 @@
   function init(){ makeSongButtons(); update(); }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
   setInterval(update,30000);          /* 30秒ごとに更新 */
+  addEventListener('resize',function(){update();});
   document.addEventListener('visibilitychange',function(){if(!document.hidden)update();});
 })();
 </script>
