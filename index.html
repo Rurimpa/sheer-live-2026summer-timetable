@@ -56,6 +56,12 @@
     --shadow:0 1px 3px rgba(0,0,0,.4);
   }
 
+  /* 現在強調カラー */
+  :root{ --now-ink:#e02718; --now-bg:#fdeceb; --now-bar:#e02718; --now-badge-bg:#e02718; --now-badge-ink:#ffffff; }
+  @media (prefers-color-scheme:dark){ :root{ --now-ink:#ff6f61; --now-bg:#3a1613; --now-bar:#ff6f61; --now-badge-bg:#ff5a4d; --now-badge-ink:#2a0d0a; } }
+  :root[data-theme="light"]{ --now-ink:#e02718; --now-bg:#fdeceb; --now-bar:#e02718; --now-badge-bg:#e02718; --now-badge-ink:#ffffff; }
+  :root[data-theme="dark"]{ --now-ink:#ff6f61; --now-bg:#3a1613; --now-bar:#ff6f61; --now-badge-bg:#ff5a4d; --now-badge-ink:#2a0d0a; }
+
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;overflow-x:hidden;}
   body{
@@ -221,6 +227,39 @@
     border-top:1px solid var(--line);
   }
   footer.foot strong{ color:var(--ink); font-weight:700; }
+
+  /* 現在（リアルタイム強調） */
+  .act.now, .band.now{ background:var(--now-bg); box-shadow:inset 4px 0 0 var(--now-bar); }
+  .act.now .slot time{ color:var(--now-ink); }
+  .band.now > time{ color:var(--now-ink); }
+  .now-badge{ align-self:flex-start; display:inline-flex; align-items:center; gap:5px; font-size:.68rem; font-weight:800; letter-spacing:.08em; color:var(--now-badge-ink); background:var(--now-badge-bg); border-radius:999px; padding:2px 10px; margin-bottom:6px; }
+  .now-badge .dot{ width:7px; height:7px; border-radius:50%; background:currentColor; animation:nowpulse 1.3s ease-in-out infinite; }
+  @keyframes nowpulse{ 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.3; transform:scale(.65);} }
+  @media (prefers-reduced-motion:reduce){ .now-badge .dot{ animation:none; } }
+
+  /* 曲＝タップで配信サービスのポップアップ */
+  .songbtn{ display:inline; font:inherit; color:inherit; background:none; border:0; padding:0; margin:0; cursor:pointer; -webkit-tap-highlight-color:rgba(124,182,62,.25); }
+  .songbtn .ttl{ border-bottom:1px dotted var(--by-ink); }
+  .songbtn::after{ content:"\25B6"; margin-left:.4em; font-size:.7em; color:var(--marker); vertical-align:middle; }
+  .songbtn:hover .ttl{ color:var(--marker); border-bottom-color:var(--marker); }
+  .songbtn:focus-visible{ outline:2px solid var(--marker); outline-offset:2px; border-radius:3px; }
+
+  .svc-overlay{ position:fixed; inset:0; z-index:999; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(10,15,5,.55); }
+  .svc-overlay[hidden]{ display:none; }
+  .svc-card{ width:100%; max-width:340px; background:var(--surface); color:var(--ink); border-radius:18px; padding:18px 18px 20px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+  .svc-close{ position:absolute; top:8px; right:10px; width:32px; height:32px; border:0; background:none; color:var(--muted); font-size:1.6rem; line-height:1; cursor:pointer; }
+  .svc-title{ text-align:center; margin:4px 24px 16px; }
+  .svc-title .st-song{ display:block; font-size:1.05rem; font-weight:800; line-height:1.3; }
+  .svc-title .st-artist{ display:block; font-size:.82rem; color:var(--muted); margin-top:3px; }
+  .svc-rows{ display:flex; flex-direction:column; gap:10px; }
+  .svc-row{ display:flex; gap:10px; justify-content:center; }
+  .svc-row .svc{ flex:1 1 0; }
+  .svc-row.single .svc{ flex:0 0 58%; }
+  .svc{ display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 6px; border-radius:14px; background:var(--stripe); border:1px solid var(--line); color:var(--ink); text-decoration:none; }
+  .svc .ic{ width:34px; height:34px; display:block; }
+  .svc .nm{ font-size:.72rem; font-weight:700; letter-spacing:.02em; text-align:center; }
+  .svc:active{ transform:scale(.97); }
+  .svc.off{ opacity:.4; filter:grayscale(1); pointer-events:none; }
 </style>
 
 <main class="board">
@@ -291,5 +330,111 @@
   </footer>
 
 </main>
+
+<script>
+(function(){
+  var EVENT={y:2026,m:8,d:1};   /* 開催日（日本時間）2026-08-01 */
+  var firstRun=true;
+  function nowInfo(){
+    try{
+      var p=new URLSearchParams(location.search);
+      var t=p.get('t');   /* テスト用: ?t=15:20 で時刻を仮に指定 */
+      if(t&&/^\d{1,2}:\d{2}$/.test(t)){var a=t.split(':');return{min:(+a[0])*60+(+a[1]),day:true};}
+    }catch(e){}
+    var j=new Date(Date.now()+9*3600*1000);   /* UTC→日本時間(+9h) */
+    var day=(j.getUTCFullYear()===EVENT.y&&(j.getUTCMonth()+1)===EVENT.m&&j.getUTCDate()===EVENT.d);
+    return{min:j.getUTCHours()*60+j.getUTCMinutes(),day:day};
+  }
+  function rowList(){
+    var out=[];
+    document.querySelectorAll('.band,.act').forEach(function(el){
+      var tt=el.querySelector('time'); if(!tt)return;
+      var m=tt.textContent.trim().match(/^(\d{1,2}):(\d{2})/);
+      if(m)out.push({el:el,min:(+m[1])*60+(+m[2])});
+    });
+    return out;
+  }
+  function clearNow(){
+    document.querySelectorAll('.now').forEach(function(el){el.classList.remove('now');});
+    document.querySelectorAll('.now-badge').forEach(function(el){el.remove();});
+  }
+  function update(){
+    clearNow();
+    var info=nowInfo();
+    if(!info.day)return;               /* 開催日以外は強調しない */
+    var rs=rowList(),cur=null;
+    for(var i=0;i<rs.length;i++){ if(rs[i].min<=info.min) cur=rs[i]; }
+    if(!cur)return;                    /* 開演前 */
+    cur.el.classList.add('now');
+    if(cur.el.classList.contains('act')){
+      var d=cur.el.querySelector('.detail');
+      if(d){var b=document.createElement('span');b.className='now-badge';b.innerHTML='<span class="dot"></span>現在';d.insertBefore(b,d.firstChild);}
+    }
+    if(firstRun){firstRun=false;try{cur.el.scrollIntoView({block:'center'});}catch(e){}}
+  }
+  /* ===== 曲タップ → 配信サービスのポップアップ ===== */
+  var SVC={
+    youtube:{nm:'YouTube',ic:'<svg viewBox="0 0 28 28"><rect x="2" y="6" width="24" height="16" rx="5" fill="#FF0000"/><polygon points="12,10.5 19,14 12,17.5" fill="#fff"/></svg>',url:function(q){return 'https://www.youtube.com/results?search_query='+q;}},
+    spotify:{nm:'Spotify',ic:'<svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="11" fill="#1DB954"/><path d="M8.5 11.5c4-1 8-.6 11.2 1.1" stroke="#fff" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M9 14.6c3.3-.8 6.6-.4 9.3 1.1" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M9.4 17.4c2.6-.6 5.2-.3 7.2.8" stroke="#fff" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>',url:function(q){return 'https://open.spotify.com/search/'+q;}},
+    applemusic:{nm:'Apple Music',ic:'<svg viewBox="0 0 28 28"><defs><linearGradient id="amg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FB5C74"/><stop offset="1" stop-color="#FA233B"/></linearGradient></defs><rect x="3" y="3" width="22" height="22" rx="6" fill="url(#amg)"/><path d="M18 8l-7 1.6v7.2a2.1 2.1 0 1 1-1.4-2V11l8.4-1.9z" fill="#fff"/></svg>',url:function(q){return 'https://music.apple.com/jp/search?term='+q;}},
+    linemusic:{nm:'LINE MUSIC',ic:'<svg viewBox="0 0 28 28"><rect x="3" y="3" width="22" height="22" rx="6" fill="#06C755"/><path d="M18 8l-7 1.6v7.2a2.1 2.1 0 1 1-1.4-2V11l8.4-1.9z" fill="#fff"/></svg>',url:function(q){return 'https://music.line.me/webapp/search?query='+q;}},
+    ytmusic:{nm:'YouTube Music',ic:'<svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="11" fill="#FF0000"/><polygon points="11.5,9.5 20,14 11.5,18.5" fill="#fff"/></svg>',url:function(q){return 'https://music.youtube.com/search?q='+q;}}
+  };
+  var LAYOUT=[['youtube'],['spotify','applemusic'],['linemusic','ytmusic']];
+  var pop=null;
+  function svcAnchor(key){
+    var s=SVC[key];
+    var a=document.createElement('a');
+    a.className='svc'; a.setAttribute('data-svc',key);
+    a.target='_blank'; a.rel='noopener noreferrer';
+    a.innerHTML='<span class="ic">'+s.ic+'</span><span class="nm">'+s.nm+'</span>';
+    return a;
+  }
+  function buildPopup(){
+    pop=document.createElement('div'); pop.className='svc-overlay'; pop.hidden=true;
+    var card=document.createElement('div'); card.className='svc-card'; card.setAttribute('role','dialog'); card.setAttribute('aria-modal','true');
+    var close=document.createElement('button'); close.className='svc-close'; close.setAttribute('aria-label','閉じる'); close.innerHTML='×';
+    var ttl=document.createElement('div'); ttl.className='svc-title'; ttl.innerHTML='<span class="st-song"></span><span class="st-artist"></span>';
+    var rows=document.createElement('div'); rows.className='svc-rows';
+    LAYOUT.forEach(function(row){
+      var r=document.createElement('div'); r.className='svc-row'+(row.length===1?' single':'');
+      row.forEach(function(k){ r.appendChild(svcAnchor(k)); });
+      rows.appendChild(r);
+    });
+    card.appendChild(close); card.appendChild(ttl); card.appendChild(rows);
+    pop.appendChild(card); document.body.appendChild(pop);
+    close.addEventListener('click',closePop);
+    pop.addEventListener('click',function(e){ if(e.target===pop) closePop(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&pop&&!pop.hidden) closePop(); });
+  }
+  function openPop(title,artist){
+    if(!pop) buildPopup();
+    var q=encodeURIComponent((title+' '+artist).replace(/\s+/g,' ').trim());
+    pop.querySelector('.st-song').textContent=title;
+    pop.querySelector('.st-artist').textContent=artist;
+    pop.querySelectorAll('.svc').forEach(function(a){ var k=a.getAttribute('data-svc'); a.href=SVC[k].url(q); });
+    pop.hidden=false;
+  }
+  function closePop(){ if(pop) pop.hidden=true; }
+  function makeSongButtons(){
+    document.querySelectorAll('.songs li').forEach(function(li){
+      if(li.querySelector('.songbtn'))return;
+      var by=li.querySelector('.by'); var artist=by?by.textContent.trim():'';
+      var title=''; for(var i=0;i<li.childNodes.length;i++){var n=li.childNodes[i]; if(n.nodeType===3) title+=n.textContent;}
+      title=title.trim(); if(!title)return;
+      while(li.firstChild) li.removeChild(li.firstChild);
+      var b=document.createElement('button'); b.className='songbtn'; b.type='button';
+      var t=document.createElement('span'); t.className='ttl'; t.textContent=title; b.appendChild(t);
+      if(by) b.appendChild(by);
+      (function(ti,ar){ b.addEventListener('click',function(){ openPop(ti,ar); }); })(title,artist);
+      li.appendChild(b);
+    });
+  }
+  function init(){ makeSongButtons(); update(); }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  setInterval(update,30000);          /* 30秒ごとに更新 */
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)update();});
+})();
+</script>
 </body>
 </html>
