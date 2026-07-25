@@ -476,11 +476,13 @@
     pop.querySelector('.st-song').textContent=title;
     pop.querySelector('.st-artist').textContent=artist;
     var dkey=title+'|'+artist; var dd=(typeof DIRECT!=='undefined')?DIRECT[dkey]:null;
-    pop.querySelectorAll('.svc').forEach(function(a){ var k=a.getAttribute('data-svc'); var u=(dd&&dd[k])?dd[k]:SVC[k].url(q); if(u){ a.href=u; a.style.display=''; } else { a.removeAttribute('href'); a.style.display='none'; } });
+    var only=ONLYSVC[dkey];
+    pop.querySelectorAll('.svc').forEach(function(a){ var k=a.getAttribute('data-svc'); var u=(only&&only.indexOf(k)<0)?'':((dd&&dd[k])?dd[k]:SVC[k].url(q)); if(u){ a.href=u; a.style.display=''; } else { a.removeAttribute('href'); a.style.display='none'; } });
     pop.hidden=false;
   }
   function closePop(){ if(pop) pop.hidden=true; }
   var NOLINK={"スーパーハートレート|橋本知風":true};
+  var ONLYSVC={"Still Hungry|マーガレットさわこ":["youtube"]};
   function makeSongButtons(){
     document.querySelectorAll('.songs li').forEach(function(li){
       if(li.querySelector('.songbtn'))return;
