@@ -247,6 +247,8 @@
     border-top:1px solid var(--line);
   }
   footer.foot strong{ color:var(--ink); font-weight:700; }
+  .foot-admin{ margin-top:10px; padding-top:10px; border-top:1px solid var(--line); }
+  .foot-admin a{ color:#1a86bd; word-break:break-all; }
 
   /* 現在＝その枠の「時刻」だけ赤くする（進行がずれても“演者が出演中”と誤解させないため最小限） */
   /* 現在＝赤いラインは右側だけ（文字に被らない）。左の定刻は緑のまま（赤くしない）。 */
@@ -297,6 +299,16 @@
   .oc-join{ display:flex; align-items:center; justify-content:center; gap:8px; margin:12px auto 0; padding:13px 20px; background:#06C755; color:#fff; font-size:.95rem; font-weight:800; text-decoration:none; border-radius:999px; }
   .oc-join svg{ width:20px; height:20px; }
   .oc-note{ text-align:center; font-size:.74rem; color:var(--muted); margin-top:10px; }
+  .oc-reveal[hidden]{ display:none; }
+  .oc-gate{ margin-top:16px; text-align:center; }
+  .oc-gate[hidden]{ display:none; }
+  .oc-gate-label{ font-size:.85rem; font-weight:700; color:var(--muted); margin-bottom:10px; }
+  .oc-pass-row{ display:flex; gap:8px; justify-content:center; }
+  .oc-pass-input{ flex:1 1 auto; max-width:180px; padding:11px 14px; font-size:.95rem; border:1px solid var(--line); border-radius:999px; background:var(--stripe); color:var(--ink); }
+  .oc-pass-btn{ padding:11px 18px; background:#06C755; color:#fff; font-size:.9rem; font-weight:800; border:0; border-radius:999px; cursor:pointer; }
+  .oc-pass-btn:active{ transform:scale(.97); }
+  .oc-pass-err{ margin-top:8px; font-size:.78rem; color:#e02718; font-weight:700; }
+  .oc-pass-err[hidden]{ display:none; }
 </style>
 
 <main class="board">
@@ -377,6 +389,7 @@
   <footer class="foot">
     <strong>SHEER LIVE -2026 SUMMER- 四谷会場</strong><br>
     本番タイムテーブル（全36組）｜ 2026年8月1日(土)
+    <div class="foot-admin">管理者「るりかな」のるりんぱ<br><a href="https://x.com/rurinpapa" target="_blank" rel="noopener noreferrer">https://x.com/rurinpapa</a></div>
   </footer>
 
   <div class="oc-overlay" id="ocPop" hidden>
@@ -385,9 +398,19 @@
       <div class="oc-title"><span class="oc-unofficial">【非公式】</span>交流用オープンチャット</div>
       <div class="oc-sub">シアーライブ 20260801土 四谷</div>
       <div class="oc-desc">※これは非公式です※<br><br>シアーライブ 20260801土 四谷 の<br>「出演者」と「観覧者」の交流<br>を目的にした"非公式"のオプチャです<br><br>出演者の方はぜひ<br>出演者名が分かる名前<br>にてご参加ください<br><br>管理者の権限にて<br>強制退会させていただく場合<br>もございますので<br>あらかじめご了承ください<br><br>また公式から運用中止などを<br>求められた場合、<br>予告なく閉鎖する場合があります<br><br>管理者「るりかな」のるりんぱ<br><a href="https://x.com/rurinpapa" target="_blank" rel="noopener noreferrer">https://x.com/rurinpapa</a></div>
-      <img class="oc-qr" src="openchat_qr.jpg" alt="オープンチャット参加用QRコード" width="190" height="190">
-      <a class="oc-join" href="https://line.me/ti/g2/PD3NcOcjCRa2k326_xuqUD-tNuXVqfEgg0aiWQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.5 1.5 4.8 3.8 6.3-.2.9-.7 2.2-1.4 3.2-.2.3.1.7.5.6 1.9-.5 3.4-1.3 4.3-1.9 1 .2 1.9.3 2.8.3 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>LINEで参加する</a>
-      <div class="oc-note">QRを読み取るか、上のボタンから参加できます</div>
+      <div class="oc-gate" id="ocGate">
+        <div class="oc-gate-label">合言葉を入力してください</div>
+        <div class="oc-pass-row">
+          <input type="text" id="ocPassInput" class="oc-pass-input" placeholder="合言葉" autocomplete="off">
+          <button type="button" id="ocPassBtn" class="oc-pass-btn">送信</button>
+        </div>
+        <div class="oc-pass-err" id="ocPassErr" hidden>合言葉が違います</div>
+      </div>
+      <div class="oc-reveal" id="ocReveal" hidden>
+        <img class="oc-qr" src="openchat_qr.jpg" alt="オープンチャット参加用QRコード" width="190" height="190">
+        <a class="oc-join" href="https://line.me/ti/g2/PD3NcOcjCRa2k326_xuqUD-tNuXVqfEgg0aiWQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.5 1.5 4.8 3.8 6.3-.2.9-.7 2.2-1.4 3.2-.2.3.1.7.5.6 1.9-.5 3.4-1.3 4.3-1.9 1 .2 1.9.3 2.8.3 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>LINEで参加する</a>
+        <div class="oc-note">QRを読み取るか、上のボタンから参加できます</div>
+      </div>
     </div>
   </div>
 
@@ -529,13 +552,36 @@
 <script>
 (function(){
   var btn=document.getElementById('ocBtn'), pop=document.getElementById('ocPop'), cls=document.getElementById('ocClose');
+  var gate=document.getElementById('ocGate'), reveal=document.getElementById('ocReveal');
+  var passInput=document.getElementById('ocPassInput'), passBtn=document.getElementById('ocPassBtn'), passErr=document.getElementById('ocPassErr');
+  var PASS='合言葉';
   if(!btn||!pop)return;
-  function show(){ pop.hidden=false; }
+  function unlocked(){ try{ return sessionStorage.getItem('ocUnlocked')==='1'; }catch(e){ return false; } }
+  function unlock(){
+    try{ sessionStorage.setItem('ocUnlocked','1'); }catch(e){}
+    if(gate) gate.hidden=true;
+    if(reveal) reveal.hidden=false;
+  }
+  function resetGate(){
+    if(!gate||!reveal) return;
+    if(unlocked()){ gate.hidden=true; reveal.hidden=false; }
+    else{ gate.hidden=false; reveal.hidden=true; }
+    if(passInput) passInput.value='';
+    if(passErr) passErr.hidden=true;
+  }
+  function tryUnlock(){
+    if(!passInput) return;
+    if(passInput.value===PASS){ unlock(); }
+    else{ if(passErr) passErr.hidden=false; passInput.value=''; passInput.focus(); }
+  }
+  function show(){ pop.hidden=false; resetGate(); }
   function hide(){ pop.hidden=true; }
   btn.addEventListener('click',show);
   if(cls) cls.addEventListener('click',hide);
   pop.addEventListener('click',function(e){ if(e.target===pop) hide(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!pop.hidden) hide(); });
+  if(passBtn) passBtn.addEventListener('click',tryUnlock);
+  if(passInput) passInput.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); } });
 })();
 </script>
 
